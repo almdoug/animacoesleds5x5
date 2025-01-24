@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "author": "Douglas",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-pi-pico-w",
+      "id": "pico",
+      "top": -310.45,
+      "left": 1069.15,
+      "attrs": { "builder": "pico-sdk" }
+    },
+    {
+      "type": "wokwi-membrane-keypad",
+      "id": "keypad1",
+      "top": -357.2,
+      "left": 648.8,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-neopixel-matrix",
+      "id": "matrix1",
+      "top": -351.2,
+      "left": 1239.5,
+      "attrs": {
+        "rows": "5",
+        "cols": "5",
+        "serpentine": "false",
+        "brightness": "0.5"
+      }
+    },
+    {
+      "type": "wokwi-buzzer",
+      "id": "bz1",
+      "top": -381.6,
+      "left": 1173,
+      "attrs": { "volume": "0.1" }
+    }
+  ],
+  "connections": [
+    [ "pico:GP0", "$serialMonitor:RX", "", [] ],
+    [ "pico:GP1", "$serialMonitor:TX", "", [] ],
+    [ "pico:GP2", "keypad1:C2", "orange", [ "h-76.8", "v316.8", "h-201.6" ] ],
+    [ "keypad1:C3", "pico:GP3", "orange", [ "v57.6", "h182.25", "v-297.6" ] ],
+    [ "pico:GP4", "keypad1:C4", "orange", [ "h-96", "v278.4", "h-163.2" ] ],
+    [ "pico:GP5", "keypad1:R1", "green", [ "h-57.6", "v307.2", "h-268.8" ] ],
+    [ "keypad1:R2", "pico:GP6", "green", [ "v96", "h268.4", "h0", "v-297.6" ] ],
+    [ "pico:GP7", "keypad1:R3", "green", [ "h-38.4", "v297.6", "h-268.8", "v-105.6" ] ],
+    [ "keypad1:R4", "pico:GP8", "green", [ "v115.2", "h268.6", "v-19.2" ] ],
+    [ "keypad1:C1", "pico:GP28", "green", [ "v9.6", "h374.3", "v-230.4" ] ],
+    [ "pico:GND.8", "matrix1:GND", "black", [ "h0" ] ],
+    [ "pico:VBUS", "matrix1:VDD", "red", [ "h0" ] ],
+    [ "pico:GP22", "matrix1:DIN", "green", [ "h0" ] ],
+    [ "pico:GP26", "bz1:2", "green", [ "h0" ] ],
+    [ "pico:GND.7", "bz1:1", "black", [ "h0" ] ]
+  ],
+  "dependencies": {}
+}
