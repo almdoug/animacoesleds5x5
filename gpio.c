@@ -39,8 +39,10 @@ void put_pixel(uint32_t pixel_grb);
 void set_all_pixels(RGB_Color color);
 char read_keypad(void);
 void animation_1(void);
-uint32_t urgb_u32(uint8_t r, uint8_t g, uint8_t b);
 void animation_2();
+void animation_3(); // Animação de círculos concêntricos
+
+uint32_t urgb_u32(uint8_t r, uint8_t g, uint8_t b);
 
 // Adicione esta função antes da função main
 static inline void ws2812_program_init(PIO pio, uint sm, uint offset, uint pin, float freq, bool rgbw)
@@ -64,7 +66,7 @@ int main()
 {
     stdio_init_all();
     init_ws2812();
-    init_buzzer(); 
+    init_buzzer();
 
     // Configuração dos pinos do teclado
     gpio_init(ROW1);
@@ -109,8 +111,10 @@ int main()
                 play_tone(523, 100);
                 set_all_pixels((RGB_Color){0, 0, 0}); // Desliga LEDs após a animação
                 break;
-            case 'A':
-                set_all_pixels((RGB_Color){0, 0, 0}); // Desliga todos
+            case '3': // Animação com o botão 3 cria efeito de círculos concêntricos
+                animation_3();
+                play_tone(500, 100);
+                set_all_pixels((RGB_Color){0, 0, 0}); // Desliga LEDs após a animação
                 break;
             case 'B':
                 set_all_pixels((RGB_Color){0, 0, 255}); // Azul 100%
@@ -336,5 +340,64 @@ void animation_2()
 
         // Reseta os LEDs antes do próximo ciclo
         set_all_pixels((RGB_Color){0, 0, 0});
+    }
+}
+
+void animation_3()
+{
+    // Definição do FPS e tempo entre frames
+    const int FPS = 20;
+    const int frame_delay = 1000 / FPS; // Delay em ms para atingir o FPS desejado
+
+    // Cores base para a animação
+    RGB_Color cores[] = {
+        {255, 0, 0},   // Vermelho
+        {0, 255, 0},   // Verde
+        {0, 0, 255},   // Azul
+        {255, 255, 0}, // Amarelo
+        {0, 255, 255}, // Ciano
+    };
+    const int num_cores = 5;
+
+    // Mapeamento da matriz 5x5 para facilitar a animação
+    const uint8_t matriz[5][5] = {
+        {0, 1, 2, 3, 4},
+        {5, 6, 7, 8, 9},
+        {10, 11, 12, 13, 14},
+        {15, 16, 17, 18, 19},
+        {20, 21, 22, 23, 24}};
+
+    // Cria o efeito de círculos concêntricos
+    for (int ciclo = 0; ciclo < 3; ciclo++)
+    {
+        for (int raio = 0; raio <= 2; raio++)
+        {
+            int cor_idx = raio % num_cores;
+            RGB_Color cor = cores[cor_idx];
+
+            // Limpa todos os LEDs
+            set_all_pixels((RGB_Color){0, 0, 0});
+
+            // Desenha um círculo de raio específico
+            for (int i = -raio; i <= raio; i++)
+            {
+                for (int j = -raio; j <= raio; j++)
+                {
+                    int x = 2 + i;
+                    int y = 2 + j;
+                    if (x >= 0 && x < 5 && y >= 0 && y < 5)
+                    {
+                        int dist = abs(i) + abs(j);
+                        if (dist == raio)
+                        {
+                            int pos = matriz[x][y];
+                            put_pixel(urgb_u32(cor.r, cor.g, cor.b));
+                        }
+                    }
+                }
+            }
+
+            sleep_ms(frame_delay);
+        }
     }
 }
