@@ -348,7 +348,7 @@ void animation_3()
     // Definição do FPS e tempo entre frames
     const int FPS = 20;
     const int frame_delay = 1000 / FPS; // Delay em ms para atingir o FPS desejado
-
+    int abs();
     // Cores base para a animação
     RGB_Color cores[] = {
         {255, 0, 0},   // Vermelho
