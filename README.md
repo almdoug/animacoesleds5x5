@@ -41,4 +41,6 @@ Este projeto implementa uma matriz de LEDs 5x5 controlada por um microcontrolado
 ## Autores
 - [César Rebouças Costas] (https://github.com/cesarrcosta99)
 - [Douglas Benevides Almeida] (https://github.com/almdoug)
+-[Andressa Silva Santos ] (https://github.com/Andressa-sstn)
+
 
